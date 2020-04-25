@@ -8,9 +8,11 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import sys
 
 
 class Ui_MainWindow(object):
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(931, 636)
@@ -21,51 +23,30 @@ class Ui_MainWindow(object):
         MainWindow.setSizePolicy(sizePolicy)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(0, 0, 931, 61))
-        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame.setObjectName("frame")
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self.frame)
+        self.horizontalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 931, 51))
+        self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.lineEdit = QtWidgets.QLineEdit(self.frame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        self.lineEdit = QtWidgets.QLineEdit(self.horizontalLayoutWidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(6)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lineEdit.sizePolicy().hasHeightForWidth())
         self.lineEdit.setSizePolicy(sizePolicy)
-        self.lineEdit.setAutoFillBackground(False)
-        self.lineEdit.setText("")
-        self.lineEdit.setPlaceholderText("")
         self.lineEdit.setObjectName("lineEdit")
         self.horizontalLayout.addWidget(self.lineEdit)
-        self.pushButton = QtWidgets.QPushButton(self.frame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
+        self.pushButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
         self.pushButton.setSizePolicy(sizePolicy)
-        self.pushButton.setMaximumSize(QtCore.QSize(300, 100))
         self.pushButton.setObjectName("pushButton")
         self.horizontalLayout.addWidget(self.pushButton)
-        self.scrollArea = QtWidgets.QScrollArea(self.centralwidget)
-        self.scrollArea.setGeometry(QtCore.QRect(0, 60, 931, 521))
-        self.scrollArea.setAutoFillBackground(False)
-        self.scrollArea.setWidgetResizable(True)
-        self.scrollArea.setObjectName("scrollArea")
-        self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 929, 519))
-        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
-        self.verticalScrollBar = QtWidgets.QScrollBar(self.scrollAreaWidgetContents)
-        self.verticalScrollBar.setGeometry(QtCore.QRect(910, 0, 16, 511))
-        self.verticalScrollBar.setOrientation(QtCore.Qt.Vertical)
-        self.verticalScrollBar.setObjectName("verticalScrollBar")
-        self.horizontalScrollBar = QtWidgets.QScrollBar(self.scrollAreaWidgetContents)
-        self.horizontalScrollBar.setGeometry(QtCore.QRect(0, 500, 911, 16))
-        self.horizontalScrollBar.setOrientation(QtCore.Qt.Horizontal)
-        self.horizontalScrollBar.setObjectName("horizontalScrollBar")
-        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         MainWindow.setCentralWidget(self.centralwidget)
+
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
@@ -85,10 +66,11 @@ class Ui_MainWindow(object):
         self.toolBar.addAction(self.actionOption)
         self.toolBar.addSeparator()
         self.toolBar.addAction(self.actionQuit)
-
         self.retranslateUi(MainWindow)
         self.toolBar.actionTriggered['QAction*'].connect(MainWindow.close)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        QtWidgets.QMainWindow.show(MainWindow)
+        sys.exit(app.exec_())
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -101,3 +83,10 @@ class Ui_MainWindow(object):
         self.actionOption.setToolTip(_translate("MainWindow", "设置"))
         self.actionQuit.setText(_translate("MainWindow", "退出"))
         self.actionQuit.setToolTip(_translate("MainWindow", "退出"))
+
+
+if __name__ == '__main__':
+    app = QtWidgets.QApplication(sys.argv)
+    run = Ui_MainWindow()
+    run.setupUi(QtWidgets.QMainWindow())
+
