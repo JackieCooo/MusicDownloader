@@ -527,32 +527,21 @@ class XiamiMusic(object):  # 虾米音乐主程序
 class Run(object):
 
     def __init__(self):
+        self.engine_switch()
         self.search_name = None
         self.sess = None
         self.n = None  # 音乐序号
+        self.page = 1
 
-    def run(self):
-        page = 1
-        self.engine_switch()
-        while True:
-            op = input()
-            if op == 'down':
-                page += 1
-                self.sess.search_music(self.search_name, page, self.n)
-            elif op.isdigit():
-                self.sess.get_song_info(op)
-            elif op == 'search':
-                self.n = 0
-                self.search_name = input('输入音乐名：')
-                self.n = self.sess.search_music(self.search_name, page, self.n)
-            elif op == 'quit':
-                break
-            elif op == 'source':
-                print('1. 网易云  2. QQ音乐  3. 酷狗音乐  4. 酷我音乐  5. 虾米音乐  6. 咪咕音乐')
-                source = int(input('输入搜索引擎序号'))
-                self.engine_switch(source)
-            else:
-                print('输入错误')
+    # def run(self, op):
+    #     if op == 'down':
+    #         self.page += 1
+    #         self.sess.search_music(self.search_name, self.page, self.n)
+    #     elif op.isdigit():
+    #         self.sess.get_song_info(op)
+    #     elif op == 'search':
+    #         self.n = 0
+    #         self.n = self.sess.search_music(self.search_name, self.page, self.n)
 
     def engine_switch(self, source=1):  # 切换搜索引擎，默认为网易云音乐
         if source == 1:
@@ -567,8 +556,17 @@ class Run(object):
             self.sess = XiamiMusic()
         elif source == 6:
             self.sess = MiguMusic()
-        else:
-            print('输入错误')
+
+    def search(self, search_name):
+        self.n = 0
+        self.n = self.sess.search_music(search_name, self.page, self.n)
+
+    def download(self, index):
+        self.sess.get_song_info(index)
+
+    def next_page(self):
+        self.page += 1
+        self.sess.search_music(self.search_name, self.page, self.n)
 
 
 class SongInfoInsert(object):
@@ -613,6 +611,6 @@ class SongInfoInsert(object):
             os.remove('cover.jpg')
 
 
-if __name__ == '__main__':
-    run = Run()
-    run.run()
+# if __name__ == '__main__':
+#     run = Run()
+#     run.run()

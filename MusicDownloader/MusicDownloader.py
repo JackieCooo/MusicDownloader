@@ -8,6 +8,8 @@ class GUIMainWindow(object):
     def __init__(self):
         self.engine_list = ['网易云音乐', 'QQ音乐', '酷狗音乐', '酷我音乐', '虾米音乐', '咪咕音乐']
         self.setup_ui(QtWidgets.QMainWindow())
+        self.run = Main.Run()
+        self.info_insert = Main.SongInfoInsert()
 
     def setup_ui(self, main_window):
         main_window.setObjectName("main_window")
@@ -54,18 +56,19 @@ class GUIMainWindow(object):
         self.search_page.setObjectName("search_page")
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.engine_switch = QtWidgets.QComboBox(self.search_tab)
+        self.engine = QtWidgets.QComboBox(self.search_tab)
         size_policy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         size_policy.setHorizontalStretch(1)
         size_policy.setVerticalStretch(0)
-        size_policy.setHeightForWidth(self.engine_switch.sizePolicy().hasHeightForWidth())
-        self.engine_switch.setSizePolicy(size_policy)
+        size_policy.setHeightForWidth(self.engine.sizePolicy().hasHeightForWidth())
+        self.engine.setSizePolicy(size_policy)
         font = QtGui.QFont()
         font.setPointSize(10)
-        self.engine_switch.setFont(font)
-        self.engine_switch.setObjectName("engine_switch")
-        self.engine_switch.addItems(self.engine_list)
-        self.horizontalLayout.addWidget(self.engine_switch)
+        self.engine.setFont(font)
+        self.engine.setObjectName("engine")
+        self.engine.addItems(self.engine_list)
+        self.engine.currentIndexChanged.connect(lambda: self.engine_switch(self.engine))
+        self.horizontalLayout.addWidget(self.engine)
         self.search_name = QtWidgets.QLineEdit(self.search_tab)
         size_policy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         size_policy.setHorizontalStretch(6)
@@ -90,6 +93,7 @@ class GUIMainWindow(object):
         font.setPointSize(12)
         self.search_button.setFont(font)
         self.search_button.setObjectName("pushButton")
+        self.search_button.clicked.connect(self.search)
         self.horizontalLayout.addWidget(self.search_button)
         self.search_page.addLayout(self.horizontalLayout, 0, 0, 1, 1)
         self.search_result = QtWidgets.QTableView(self.search_tab)
@@ -187,6 +191,45 @@ class GUIMainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(main_window)
         main_window.show()
         sys.exit(app.exec_())
+
+    def engine_switch(self, engine):
+        if engine == self.engine:
+            if engine.currentIndex() == 1:
+                self.run.engine_switch(1)
+            elif engine.currentIndex() == 2:
+                self.run.engine_switch(2)
+            elif engine.currentIndex() == 3:
+                self.run.engine_switch(3)
+            elif engine.currentIndex() == 4:
+                self.run.engine_switch(4)
+            elif engine.currentIndex() == 5:
+                self.run.engine_switch(5)
+            elif engine.currentIndex() == 6:
+                self.run.engine_switch(6)
+
+    def search(self):
+        search_name = self.search_name.text()
+        self.run.search(search_name)
+
+    def filename_type(self):
+        if self.radioButton_1.isChecked():
+            pass
+        elif self.radioButton_2.isChecked():
+            pass
+        elif self.radioButton_3.isChecked():
+            pass
+
+    def lyric_format(self):
+        if self.radioButton_4.isChecked():
+            pass
+        elif self.radioButton_5.isChecked():
+            pass
+
+    def exit_mode(self):
+        if self.radioButton_6.isChecked():
+            pass
+        elif self.radioButton_7.isChecked():
+            pass
 
 
 if __name__ == '__main__':
