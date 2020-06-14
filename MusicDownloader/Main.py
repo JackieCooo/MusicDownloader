@@ -259,7 +259,6 @@ class GUIMainWindow(object):
     def download(self):
         num = self.search_result.currentIndex().row()
         song_name = self.search_result.currentItem().text()
-        # print(song_name)
         self.statusbar.showMessage(f'正在下载{song_name}')
         self.sess.get_song_info(num + 1, self.filename_type, self.lyric_format_type, self.directory)
         self.statusbar.showMessage(f'{song_name}下载成功')
