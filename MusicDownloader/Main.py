@@ -300,19 +300,19 @@ class GUIMainWindow(object):
         self.filepath.setText(self.directory)
 
     def btn_set(self, num):
-        self.download_btn = QtWidgets.QPushButton('下载')
-        self.download_btn.clicked.connect(lambda: self.download(num))
-        self.lyric_btn = QtWidgets.QPushButton('歌词')
-        self.more_btn = QtWidgets.QPushButton('更多')
-        self.h_1 = QtWidgets.QHBoxLayout()
-        self.h_1.addWidget(self.download_btn)
-        self.h_1.addWidget(self.lyric_btn)
-        self.h_1.addWidget(self.more_btn)
-        self.h_1.setContentsMargins(5, 0, 5, 0)
-        self.h_1.setSpacing(5)
-        self.op_btn_set = QtWidgets.QWidget()
-        self.op_btn_set.setLayout(self.h_1)
-        return self.op_btn_set
+        download_btn = QtWidgets.QPushButton('下载')
+        download_btn.clicked.connect(lambda: self.download(num))
+        lyric_btn = QtWidgets.QPushButton('歌词')
+        more_btn = QtWidgets.QPushButton('更多')
+        h_1 = QtWidgets.QHBoxLayout()
+        h_1.addWidget(download_btn)
+        h_1.addWidget(lyric_btn)
+        h_1.addWidget(more_btn)
+        h_1.setContentsMargins(5, 0, 5, 0)
+        h_1.setSpacing(5)
+        op_btn_set = QtWidgets.QWidget()
+        op_btn_set.setLayout(h_1)
+        return op_btn_set
 
 
 if __name__ == '__main__':
