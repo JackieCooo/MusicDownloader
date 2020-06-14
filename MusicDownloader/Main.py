@@ -279,7 +279,13 @@ class GUIMainWindow(object):
             self.show_result(res)
 
     def show_result(self, res):
-        self.search_result.clear()
+        self.search_result.clearContents()
+        for i in range(30):
+            for j in range(4):
+                item = QtWidgets.QTableWidgetItem(res[i][j])
+                item.setTextAlignment(QtCore.Qt.AlignCenter)
+                self.search_result.setItem(i, j, item)
+            self.search_result.setCellWidget(i, 4, self.btn_list[i])
 
     def download(self, num):
         song_name = self.search_result.item(num, 0).text()
@@ -302,6 +308,8 @@ class GUIMainWindow(object):
         self.h_1.addWidget(self.download_btn)
         self.h_1.addWidget(self.lyric_btn)
         self.h_1.addWidget(self.more_btn)
+        self.h_1.setContentsMargins(5, 0, 5, 0)
+        self.h_1.setSpacing(5)
         self.op_btn_set = QtWidgets.QWidget()
         self.op_btn_set.setLayout(self.h_1)
         return self.op_btn_set
