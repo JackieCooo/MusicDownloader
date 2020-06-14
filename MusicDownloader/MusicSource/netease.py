@@ -36,7 +36,7 @@ class NeteaseMusic(object):  # 网易云音乐主程序
             if second < 10:
                 second = '0' + str(second)
             # print(f'{n}. {i["name"]}\t{temp[:-1]}\t{i["al"]["name"]}\t{int(i["dt"]/1000//60)}:{second}')
-            info = [i["name"], temp[:-1], i["al"]["name"]]
+            info = [i["name"], temp[:-1], i["al"]["name"], f'{int(i["dt"]/1000//60)}:{second}']
             search_result.append(info)
             # print(search_result)
         return n, search_result
