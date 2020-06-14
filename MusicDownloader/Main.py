@@ -16,11 +16,12 @@ class GUIMainWindow(object):
             os.mkdir('Downloads')
         self.directory = os.path.split(os.path.realpath(__file__))[0] + "\\Downloads\\"
         print(self.directory)
+        self.btn_list = [self.btn_set(i) for i in range(30)]
 
     def setup_ui(self, main_window):
         main_window.setObjectName("main_window")
-        main_window.resize(900, 600)
-        main_window.setWindowTitle('MusicDownloader')
+        main_window.resize(1200, 800)
+        main_window.setWindowTitle('MusicDownloader - Designed by Jackie')
         main_window.setWindowIcon(QtGui.QIcon('icon.ico'))
         size_policy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         size_policy.setHorizontalStretch(0)
@@ -48,6 +49,8 @@ class GUIMainWindow(object):
         font.setPointSize(12)
         self.tabWidget.setFont(font)
         self.tabWidget.setObjectName("tabWidget")
+
+        # 搜索页样式设置
         self.search_tab = QtWidgets.QWidget()
         size_policy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         size_policy.setHorizontalStretch(0)
@@ -64,6 +67,8 @@ class GUIMainWindow(object):
         self.search_page.setObjectName("search_page")
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
+
+        # 搜索引擎切换
         self.engine = QtWidgets.QComboBox(self.search_tab)
         size_policy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         size_policy.setHorizontalStretch(1)
@@ -77,6 +82,8 @@ class GUIMainWindow(object):
         self.engine.addItems(self.engine_list)
         self.engine.currentIndexChanged.connect(self.engine_switch)  # 搜索引擎切换
         self.horizontalLayout.addWidget(self.engine)
+
+        # 搜索框
         self.search_name = QtWidgets.QLineEdit(self.search_tab)
         size_policy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         size_policy.setHorizontalStretch(6)
@@ -91,6 +98,8 @@ class GUIMainWindow(object):
         self.search_name.placeholderText()
         self.search_name.setPlaceholderText("输入歌名")
         self.horizontalLayout.addWidget(self.search_name)
+
+        # 搜索按钮
         self.search_button = QtWidgets.QPushButton(self.search_tab)
         size_policy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         size_policy.setHorizontalStretch(1)
@@ -106,15 +115,20 @@ class GUIMainWindow(object):
         self.search_button.clicked.connect(self.search)  # 搜索按钮
         self.horizontalLayout.addWidget(self.search_button)
         self.search_page.addLayout(self.horizontalLayout, 0, 0, 1, 1)
-        self.search_result = QtWidgets.QListWidget(self.search_tab)
+
+        # 搜索结果
+        self.search_result = QtWidgets.QTableWidget(self.search_tab)
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(14)
         self.search_result.setFont(font)
-        self.search_result.doubleClicked.connect(self.download)
+        self.search_result.setRowCount(30)
+        self.search_result.setColumnCount(5)
         self.search_result.setObjectName("search_result")
         self.search_page.addWidget(self.search_result, 1, 0, 1, 1)
         self.tabWidget.addTab(self.search_tab, "搜索")
+
+        # 设置页设置
         self.option_page = QtWidgets.QWidget()
         size_policy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         size_policy.setHorizontalStretch(0)
@@ -252,21 +266,31 @@ class GUIMainWindow(object):
 
     def show_result(self, res):
         self.search_result.clear()
-        for i in res:
-            name = i[0] + ' - ' + i[1]
-            self.search_result.addItem(name)
 
-    def download(self):
-        num = self.search_result.currentIndex().row()
-        song_name = self.search_result.currentItem().text()
-        self.statusbar.showMessage(f'正在下载{song_name}')
+    def download(self, num):
+        song_name = self.search_result.item(num, 0).text()
+        artist_name = self.search_result.item(num, 1).text()
+        self.statusbar.showMessage(f'正在下载{song_name} - {artist_name}')
         self.sess.get_song_info(num + 1, self.filename_type, self.lyric_format_type, self.directory)
-        self.statusbar.showMessage(f'{song_name}下载成功')
+        self.statusbar.showMessage(f'{song_name} - {artist_name}下载成功')
 
     def choose_directory(self):
         self.directory = QtWidgets.QFileDialog.getExistingDirectory(caption='选取文件夹', directory='./') + '/'
         print(self.directory)
         self.filepath.setText(self.directory)
+
+    def btn_set(self, num):
+        self.download_btn = QtWidgets.QPushButton('下载')
+        self.download_btn.clicked.connect(lambda: self.download(num))
+        self.lyric_btn = QtWidgets.QPushButton('歌词')
+        self.more_btn = QtWidgets.QPushButton('更多')
+        self.h_1 = QtWidgets.QHBoxLayout()
+        self.h_1.addWidget(self.download_btn)
+        self.h_1.addWidget(self.lyric_btn)
+        self.h_1.addWidget(self.more_btn)
+        self.op_btn_set = QtWidgets.QWidget()
+        self.op_btn_set.setLayout(self.h_1)
+        return self.op_btn_set
 
 
 if __name__ == '__main__':
