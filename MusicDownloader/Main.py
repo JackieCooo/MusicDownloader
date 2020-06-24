@@ -11,7 +11,7 @@ class GUIMainWindow(object):
         self.sess = None
         self.filename_type = 0
         self.lyric_format_type = 0
-        self.exit_mode_type = 0
+        self.music_quality_type = 0
         if not os.path.exists('Downloads'):
             os.mkdir('Downloads')
         self.directory = os.path.split(os.path.realpath(__file__))[0] + "\\Downloads\\"
@@ -208,22 +208,26 @@ class GUIMainWindow(object):
         self.lyric_format.buttonToggled.connect(self.lyric_format_choice)
         self.label_4 = QtWidgets.QLabel(self.option_page)
         self.label_4.setObjectName("label_4")
-        self.label_4.setText('软件关闭：')
+        self.label_4.setText('下载品质：')
         self.gridLayout_3.addWidget(self.label_4, 3, 0, 1, 1)
         self.radioButton_6 = QtWidgets.QRadioButton(self.option_page)
         self.radioButton_6.setObjectName("radioButton_6")
-        self.radioButton_6.setText('退出到托盘')
-        self.exit_mode = QtWidgets.QButtonGroup(main_window)
-        self.exit_mode.setObjectName("exit_mode")
-        self.exit_mode.addButton(self.radioButton_6)
+        self.radioButton_6.setText('无损音质 >320kbps')
+        self.music_quality = QtWidgets.QButtonGroup(main_window)
+        self.music_quality.setObjectName("music_quality")
+        self.music_quality.addButton(self.radioButton_6)
         self.gridLayout_3.addWidget(self.radioButton_6, 3, 1, 1, 1)
         self.radioButton_7 = QtWidgets.QRadioButton(self.option_page)
-        self.radioButton_7.setChecked(True)
         self.radioButton_7.setObjectName("radioButton_7")
-        self.radioButton_7.setText('关闭软件')
-        self.exit_mode.addButton(self.radioButton_7)
+        self.radioButton_7.setText('高品质 320kbps')
+        self.music_quality.addButton(self.radioButton_7)
         self.gridLayout_3.addWidget(self.radioButton_7, 3, 2, 1, 2)
-        self.exit_mode.buttonToggled.connect(self.exit_mode_choice)
+        self.radioButton_8 = QtWidgets.QRadioButton(self.option_page)
+        self.radioButton_8.setText('标准音质 160kbps')
+        self.radioButton_8.setChecked(True)
+        self.music_quality.addButton(self.radioButton_8)
+        self.gridLayout_3.addWidget(self.radioButton_8, 3, 3, 1, 3)
+        self.music_quality.buttonToggled.connect(self.music_quality_choice)
         self.tabWidget.addTab(self.option_page, "设置")
         self.gridLayout_2.addWidget(self.tabWidget, 0, 0, 1, 1)
         main_window.setCentralWidget(self.centralwidget)
@@ -262,11 +266,13 @@ class GUIMainWindow(object):
         elif self.radioButton_5.isChecked():
             self.lyric_format_type = 1
 
-    def exit_mode_choice(self):
+    def music_quality_choice(self):
         if self.radioButton_6.isChecked():
-            self.exit_mode_type = 0
+            self.music_quality_type = 0
         elif self.radioButton_7.isChecked():
-            self.exit_mode_type = 1
+            self.music_quality_type = 1
+        elif self.radioButton_8.isChecked():
+            self.music_quality_type = 2
 
     def search(self):
         search_name = self.search_name.text()
