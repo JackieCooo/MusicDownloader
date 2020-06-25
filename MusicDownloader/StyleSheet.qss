@@ -1,0 +1,9 @@
+#dl_btn {
+    background-image: url(/icons/download.ico);
+}
+
+#search_button {
+    background-image: url(./icons/download.ico);
+    height: 20px;
+    width: 20px;
+}

@@ -111,7 +111,7 @@ class GUIMainWindow(object):
         font.setFamily("微软雅黑")
         font.setPointSize(12)
         self.search_button.setFont(font)
-        self.search_button.setObjectName("pushButton")
+        self.search_button.setObjectName("search_button")
         self.search_button.clicked.connect(self.search)  # 搜索按钮
         self.horizontalLayout.addWidget(self.search_button)
         self.search_page.addLayout(self.horizontalLayout, 0, 0, 1, 1)
@@ -225,6 +225,7 @@ class GUIMainWindow(object):
         self.radioButton_8 = QtWidgets.QRadioButton(self.option_page)
         self.radioButton_8.setText('标准音质 160kbps')
         self.radioButton_8.setChecked(True)
+        self.radioButton_8.setObjectName("radioButton_8")
         self.music_quality.addButton(self.radioButton_8)
         self.gridLayout_3.addWidget(self.radioButton_8, 3, 3, 1, 3)
         self.music_quality.buttonToggled.connect(self.music_quality_choice)
@@ -307,9 +308,12 @@ class GUIMainWindow(object):
 
     def btn_set(self, num):
         download_btn = QtWidgets.QPushButton('下载')
+        download_btn.setObjectName("dl_btn")
         download_btn.clicked.connect(lambda: self.download(num))
         lyric_btn = QtWidgets.QPushButton('歌词')
+        lyric_btn.setObjectName("lr_btn")
         more_btn = QtWidgets.QPushButton('更多')
+        more_btn.setObjectName("mr_btn")
         h_1 = QtWidgets.QHBoxLayout()
         h_1.addWidget(download_btn)
         h_1.addWidget(lyric_btn)
@@ -327,5 +331,8 @@ if __name__ == '__main__':
     flag = QtWidgets.QMainWindow()
     run.setup_ui(flag)
     run.engine_switch()
+    with open('StyleSheet.qss', 'r') as f:
+        style = f.read()
+    app.setStyleSheet(style)
     flag.show()
     sys.exit(app.exec_())
