@@ -1,9 +1,129 @@
 #dl_btn {
-    background-image: url(/icons/download.ico);
+    border-image:url(./icons/dl_btn_normal.png);
+    height: 25px;
+    width: 25px;
+}
+
+#dl_btn:pressed {
+    border-image:url(./icons/dl_btn_pressed.png);
+    height: 25px;
+    width: 25px;
+
+}
+
+#lr_btn {
+    border-image:url(./icons/lr_btn_normal.png);
+    height: 25px;
+    width: 25px;
+}
+
+#lr_btn:pressed {
+    border-image:url(./icons/lr_btn_pressed.png);
+    height: 25px;
+    width: 25px;
+
+}
+
+#ig_btn {
+    border-image:url(./icons/ig_btn_normal.png);
+    height: 25px;
+    width: 25px;
+}
+
+#ig_btn:pressed {
+    border-image:url(./icons/ig_btn_pressed.png);
+    height: 25px;
+    width: 25px;
+
+}
+
+#ig_btn:hover {
+    border-image:url(./icons/ig_btn_pressed.png);
+    background-color: grey;
+    height: 25px;
+    width: 25px;
+
+}
+
+#mr_btn {
+    border-image:url(./icons/mr_btn_normal.png);
+    height: 25px;
+    width: 25px;
+}
+
+#mr_btn:pressed {
+    border-image:url(./icons/mr_btn_pressed.png);
+    height: 25px;
+    width: 25px;
+
 }
 
 #search_button {
-    background-image: url(./icons/download.ico);
+    border-image:url(./icons/sc_btn_normal.png);
+    height: 36px;
+    width: 147px;
+
+}
+
+#search_button:pressed {
+    border-image:url(./icons/sc_btn_pressed.png);
+    height: 36px;
+    width: 147px;
+
+}
+
+#search_name {
+    border-image:url(./icons/search_bar.png);
+    height: 36px;
+    width: 885px;
+
+}
+
+#engine {
+    border-image:url(./icons/engine.png);
+    height: 36px;
+    width: 147px;
+
+}
+
+#engine::drop-down {
+    border-image:url(./icons/engine_down_arrow_normal.png);
     height: 20px;
     width: 20px;
+    margin-top: 8px;
+    margin-right: 8px;
+}
+
+#engine::drop-down:pressed {
+    border-image:url(./icons/engine_down_arrow_pressed.png);
+    height: 20px;
+    width: 20px;
+    margin-top: 8px;
+    margin-right: 8px;
+}
+
+QTabBar::tab {
+    margin-left: 5px;
+    border-image:url(./icons/tabbar_selected.png);
+	height: 36px;
+	width: 150px;
+	color: rgb(43, 56, 108);
+}
+
+QTabBar::tab:!selected {
+    margin-left: 5px;
+    border-image:url(./icons/tabbar_not_selected.png);
+	height: 36px;
+	width: 150px;
+	color: black;
+}
+
+QTabWidget::pane {
+	border-color: rgb(43, 56, 108);
+	border-width: 2px;
+	border-top-style: solid;
+}
+
+QMainWindow {
+    background-color: white;
 }
