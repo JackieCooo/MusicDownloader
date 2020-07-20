@@ -97,7 +97,7 @@ class QqMusic(object):  # QQ音乐主程序
         with open('cover.jpg', 'wb') as f:
             f.write(res)
 
-    def get_song_info(self, op, filename_type, lyric_format, directory):
+    def download(self, op, filename_type, lyric_format, directory):
         artist_name = ''
         song_name = self.song_list[int(op) - 1]['name']
         for i in self.song_list[int(op) - 1]['singer']:
@@ -118,4 +118,40 @@ class QqMusic(object):  # QQ音乐主程序
         self.cover_download(pmid)
         info = SongInfoInsert()
         info.song_info_insert(filepath, song_name, artist_name, album_name)
+        self.get_lyric(songmid, filepath, lyric_format)
+
+    def get_song_cover(self, op, filename_type, directory):
+        artist_name = ''
+        song_name = self.song_list[int(op) - 1]['name']
+        for i in self.song_list[int(op) - 1]['singer']:
+            artist_name += i['name'] + '、'
+        pmid = self.song_list[int(op) - 1]['album']['pmid']
+        if filename_type == 0:
+            filename = song_name + ' - ' + artist_name[:-1] + '.jpg'
+        elif filename_type == 1:
+            filename = artist_name[:-1] + ' - ' + song_name + '.jpg'
+        else:
+            filename = song_name + '.jpg'
+        filepath = directory + filename
+        url = f'https://y.gtimg.cn/music/photo_new/T002R300x300M000{pmid}.jpg?'
+        params = {
+            'max_age': '2592000'
+        }
+        res = requests.get(url=url, params=params).content
+        with open(filepath, 'wb') as f:
+            f.write(res)
+
+    def get_song_lyric(self, op, filename_type, lyric_format, directory):
+        artist_name = ''
+        song_name = self.song_list[int(op) - 1]['name']
+        for i in self.song_list[int(op) - 1]['singer']:
+            artist_name += i['name'] + '、'
+        songmid = self.song_list[int(op) - 1]['mid']
+        if filename_type == 0:
+            filename = song_name + ' - ' + artist_name[:-1]
+        elif filename_type == 1:
+            filename = artist_name[:-1] + ' - ' + song_name
+        else:
+            filename = song_name
+        filepath = directory + filename
         self.get_lyric(songmid, filepath, lyric_format)

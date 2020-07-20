@@ -87,7 +87,7 @@ class KuwoMusic(object):  # 酷我音乐主程序
                 write_content = '[' + minute + ':' + second + ']' + i['lineLyric'] + '\n'
                 f.write(write_content)
 
-    def get_song_info(self, op, filename_type, lyric_format, directory):
+    def download(self, op, filename_type, lyric_format, directory):
         song_name = self.song_list[int(op) - 1]['name']
         artist_name = self.song_list[int(op) - 1]['artist']
         album_name = self.song_list[int(op) - 1]["album"]
@@ -105,4 +105,32 @@ class KuwoMusic(object):  # 酷我音乐主程序
         self.cover_download(img_url)
         info = SongInfoInsert()
         info.song_info_insert(filepath, song_name, artist_name, album_name)
+        self.get_lyric(song_id, filepath, lyric_format)
+
+    def get_song_cover(self, op, filename_type, directory):
+        song_name = self.song_list[int(op) - 1]['name']
+        artist_name = self.song_list[int(op) - 1]['artist']
+        img_url = self.song_list[int(op) - 1]['albumpic']
+        if filename_type == 0:
+            filename = song_name + ' - ' + artist_name + '.jpg'
+        elif filename_type == 1:
+            filename = artist_name + ' - ' + song_name + '.jpg'
+        else:
+            filename = song_name + '.jpg'
+        filepath = directory + filename
+        res = requests.get(url=img_url).content
+        with open(filepath, 'wb') as f:
+            f.write(res)
+
+    def get_song_lyric(self, op, filename_type, lyric_format, directory):
+        song_name = self.song_list[int(op) - 1]['name']
+        artist_name = self.song_list[int(op) - 1]['artist']
+        song_id = self.song_list[int(op) - 1]['rid']
+        if filename_type == 0:
+            filename = song_name + ' - ' + artist_name
+        elif filename_type == 1:
+            filename = artist_name + ' - ' + song_name
+        else:
+            filename = song_name
+        filepath = directory + filename
         self.get_lyric(song_id, filepath, lyric_format)

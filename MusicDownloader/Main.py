@@ -103,6 +103,7 @@ class GUIMainWindow(object):
         font.setPointSize(10)
         self.engine.setFont(font)
         self.engine.setObjectName("engine")
+        self.engine.setCursor(QtCore.Qt.PointingHandCursor)
         self.engine.currentIndexChanged.connect(self.engine_switch)  # 搜索引擎切换
         self.search_area.addWidget(self.engine)
 
@@ -121,6 +122,7 @@ class GUIMainWindow(object):
         self.search_name.setObjectName("search_name")
         self.search_name.placeholderText()
         self.search_name.setPlaceholderText("输入歌名")
+        self.search_name.setCursor(QtCore.Qt.IBeamCursor)
         self.search_area.addWidget(self.search_name)
 
         # 搜索按钮
@@ -135,6 +137,7 @@ class GUIMainWindow(object):
         font.setPointSize(12)
         self.search_button.setFont(font)
         self.search_button.setObjectName("search_button")
+        self.search_button.setCursor(QtCore.Qt.PointingHandCursor)
         self.search_button.clicked.connect(self.search)  # 搜索按钮
         self.search_area.addWidget(self.search_button)
         self.search_page.addLayout(self.search_area, 0, 0, 1, 1)
@@ -273,6 +276,19 @@ class GUIMainWindow(object):
         self.radioButton_7.setText("高品质 320kbps")
         self.radioButton_8.setText("标准音质 160kbps")
         self.buttonGroup_3.addButton(self.radioButton_8)
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.radioButton_1.setFont(font)
+        self.radioButton_2.setFont(font)
+        self.radioButton_3.setFont(font)
+        self.radioButton_4.setFont(font)
+        self.radioButton_5.setFont(font)
+        self.radioButton_6.setFont(font)
+        self.radioButton_7.setFont(font)
+        self.radioButton_8.setFont(font)
+        self.lineEdit_2.setFont(font)
+        self.toolButton.clicked.connect(self.choose_directory)
 
         main_window.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(main_window)
@@ -342,7 +358,7 @@ class GUIMainWindow(object):
         song_name = self.search_result.item(num, 0).text()
         artist_name = self.search_result.item(num, 1).text()
         self.statusbar.showMessage(f'正在下载{song_name} - {artist_name}')
-        self.sess.get_song_info(num + 1, self.filename_type, self.lyric_format_type, self.directory)
+        self.sess.download(num + 1, self.filename_type, self.lyric_format_type, self.directory)
         self.statusbar.showMessage(f'{song_name} - {artist_name}下载成功')
 
     def choose_directory(self):
@@ -357,7 +373,8 @@ class GUIMainWindow(object):
         size_policy.setHeightForWidth(download_btn.sizePolicy().hasHeightForWidth())
         download_btn.setSizePolicy(size_policy)
         download_btn.resize(25, 25)
-        download_btn.clicked.connect(lambda: self.download(num))
+        download_btn.setCursor(QtCore.Qt.PointingHandCursor)
+        download_btn.clicked.connect(lambda: self.download(num))  # 歌曲下载按钮
 
         lyric_btn = QtWidgets.QPushButton()
         lyric_btn.setObjectName("lr_btn")
@@ -365,6 +382,8 @@ class GUIMainWindow(object):
         size_policy.setHeightForWidth(lyric_btn.sizePolicy().hasHeightForWidth())
         lyric_btn.setSizePolicy(size_policy)
         lyric_btn.resize(25, 25)
+        lyric_btn.setCursor(QtCore.Qt.PointingHandCursor)
+        lyric_btn.clicked.connect(lambda: self.sess.get_song_lyric(num + 1, self.filename_type, self.lyric_format_type, self.directory))  # 歌词下载按钮
 
         image_btn = QtWidgets.QPushButton()
         image_btn.setObjectName("ig_btn")
@@ -372,6 +391,8 @@ class GUIMainWindow(object):
         size_policy.setHeightForWidth(image_btn.sizePolicy().hasHeightForWidth())
         image_btn.setSizePolicy(size_policy)
         image_btn.resize(25, 25)
+        image_btn.setCursor(QtCore.Qt.PointingHandCursor)
+        image_btn.clicked.connect(lambda: self.sess.get_song_cover(num + 1, self.filename_type, self.directory))  # 封面下载按钮
 
         more_btn = QtWidgets.QPushButton()
         more_btn.setObjectName("mr_btn")
@@ -379,6 +400,8 @@ class GUIMainWindow(object):
         size_policy.setHeightForWidth(more_btn.sizePolicy().hasHeightForWidth())
         more_btn.setSizePolicy(size_policy)
         more_btn.resize(25, 25)
+        more_btn.setCursor(QtCore.Qt.PointingHandCursor)
+        # more_btn.clicked.connect()  # 更多选项按钮
 
         h_1 = QtWidgets.QHBoxLayout()
         h_1.addWidget(download_btn)

@@ -65,7 +65,7 @@ class NeteaseMusic(object):  # 网易云音乐主程序
         with open('cover.jpg', 'wb') as f:
             f.write(res)
 
-    def get_song_info(self, op, filename_type, lyric_format, directory):
+    def download(self, op, filename_type, lyric_format, directory):
         artist_name = ''
         song_name = self.song_list[int(op) - 1]['name']
         for i in self.song_list[int(op) - 1]['ar']:
@@ -84,6 +84,37 @@ class NeteaseMusic(object):  # 网易云音乐主程序
         self.cover_download(img_url)
         info = SongInfoInsert()
         info.song_info_insert(filepath, song_name, artist_name[:-1], album_name)
+        self.get_lyric(filepath, lyric_format)
+
+    def get_song_cover(self, op, filename_type, directory):
+        artist_name = ''
+        song_name = self.song_list[int(op) - 1]['name']
+        for i in self.song_list[int(op) - 1]['ar']:
+            artist_name += i['name'] + '、'
+        img_url = self.song_list[int(op) - 1]['al']['picUrl']
+        if filename_type == 0:
+            filename = song_name + ' - ' + artist_name[:-1] + '.jpg'
+        elif filename_type == 1:
+            filename = artist_name[:-1] + ' - ' + song_name + '.jpg'
+        else:
+            filename = song_name + '.jpg'
+        filepath = directory + filename
+        res = requests.get(url=img_url).content
+        with open(filepath, 'wb') as f:
+            f.write(res)
+
+    def get_song_lyric(self, op, filename_type, lyric_format, directory):
+        artist_name = ''
+        song_name = self.song_list[int(op) - 1]['name']
+        for i in self.song_list[int(op) - 1]['ar']:
+            artist_name += i['name'] + '、'
+        if filename_type == 0:
+            filename = song_name + ' - ' + artist_name[:-1]
+        elif filename_type == 1:
+            filename = artist_name[:-1] + ' - ' + song_name
+        else:
+            filename = song_name
+        filepath = directory + filename
         self.get_lyric(filepath, lyric_format)
 
 

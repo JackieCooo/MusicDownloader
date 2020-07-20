@@ -67,7 +67,7 @@ class KugoMusic(object):  # 酷狗音乐主程序
         with open(filepath, 'w', encoding='utf-8') as f:
             f.write(res['data']['lyrics'])
 
-    def get_song_info(self, op, filename_type, lyric_format, directory):
+    def download(self, op, filename_type, lyric_format, directory):
         song_name = self.song_list[int(op) - 1]['SongName']
         artist_name = self.song_list[int(op) - 1]['SingerName']
         album_name = self.song_list[int(op) - 1]['AlbumName']
@@ -82,3 +82,50 @@ class KugoMusic(object):  # 酷狗音乐主程序
         self.download_music(filepath, lyric_format)
         info = SongInfoInsert()
         info.song_info_insert(filepath, song_name, artist_name, album_name)
+
+    def get_song_cover(self, op, filename_type, directory):
+        song_name = self.song_list[int(op) - 1]['SongName']
+        artist_name = self.song_list[int(op) - 1]['SingerName']
+        if filename_type == 0:
+            filename = song_name + ' - ' + artist_name + '.jpg'
+        elif filename_type == 1:
+            filename = artist_name + ' - ' + song_name + '.jpg'
+        else:
+            filename = song_name + '.jpg'
+        filepath = directory + filename
+        url = 'http://www.kugou.com/yy/index.php?'
+        params = {
+            'r': 'play/getdata',
+            'hash': '85F78E1B540E147DD07F46BC10E19E09'
+        }
+        headers = {
+            "Cookie": "kg_mid=cbaba0008ce7624cb96876169f5bae0d; kg_dfid=2lP8ls2CT9Wh0s6XuX3M0nwk; kg_dfid_collect=d41d8cd98f00b204e9800998ecf8427e; KuGooRandom=66331587086741307; Hm_lvt_aedee6983d4cfc62f509129360d6bb3d=1587085723,1587086956,1587125795; ACK_SERVER_10015=%7B%22list%22%3A%5B%5B%22bjlogin-user.kugou.com%22%5D%5D%7D; Hm_lpvt_aedee6983d4cfc62f509129360d6bb3d=1587127029"
+        }
+        res = requests.get(url=url, params=params, headers=headers).json()
+        cover_url = res['data']['img']
+        urlretrieve(cover_url, filepath)
+
+    def get_song_lyric(self, op, filename_type, lyric_format, directory):
+        song_name = self.song_list[int(op) - 1]['SongName']
+        artist_name = self.song_list[int(op) - 1]['SingerName']
+        if filename_type == 0:
+            filename = song_name + ' - ' + artist_name
+        elif filename_type == 1:
+            filename = artist_name + ' - ' + song_name
+        else:
+            filename = song_name
+        url = 'http://www.kugou.com/yy/index.php?'
+        params = {
+            'r': 'play/getdata',
+            'hash': '85F78E1B540E147DD07F46BC10E19E09'
+        }
+        headers = {
+            "Cookie": "kg_mid=cbaba0008ce7624cb96876169f5bae0d; kg_dfid=2lP8ls2CT9Wh0s6XuX3M0nwk; kg_dfid_collect=d41d8cd98f00b204e9800998ecf8427e; KuGooRandom=66331587086741307; Hm_lvt_aedee6983d4cfc62f509129360d6bb3d=1587085723,1587086956,1587125795; ACK_SERVER_10015=%7B%22list%22%3A%5B%5B%22bjlogin-user.kugou.com%22%5D%5D%7D; Hm_lpvt_aedee6983d4cfc62f509129360d6bb3d=1587127029"
+        }
+        res = requests.get(url=url, params=params, headers=headers).json()
+        if lyric_format == 0:
+            filepath = directory + filename + '.lrc'
+        else:
+            filepath = directory + filename + '.txt'
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write(res['data']['lyrics'])
